@@ -54,12 +54,13 @@ slack.on 'message', (message) ->
     Teacher.check(text, (err, data) ->
       i = 0
       data.forEach (word) ->
-        if word.suggestions.option instanceof Array
-          correct = word.suggestions.option[0]
-        else
-          correct = word.suggestions.option
+        if  word.suggestions
+          if word.suggestions.option instanceof Array
+            correct = word.suggestions.option[0]
+          else
+            correct = word.suggestions.option
 
-        text = text.replace word.string, correct
+          text = text.replace word.string, correct
 
         if ++i == data.length
           channel.send "#{response} _#{text}_"
