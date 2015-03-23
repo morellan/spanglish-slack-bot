@@ -53,17 +53,20 @@ slack.on 'message', (message) ->
   if type is 'message' and text? and channel?
     Teacher.check(text, (err, data) ->
       i = 0
-      data.forEach (word) ->
-        if  word.suggestions
-          if word.suggestions.option instanceof Array
-            correct = word.suggestions.option[0]
-          else
-            correct = word.suggestions.option
+      if data
+        data.forEach (word) ->
+          if  word.suggestions
+            if word.suggestions.option instanceof Array
+              correct = word.suggestions.option[0]
+            else
+              correct = word.suggestions.option
 
-          text = text.replace word.string, correct
+            text = text.replace word.string, correct
 
-        if ++i == data.length
-          channel.send "#{response} _#{text}_"
+          if ++i == data.length
+            channel.send "#{response} _#{text}_"
+      else
+        channel.send "*Exito!*"
     )
 
     console.log """
